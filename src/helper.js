@@ -1,5 +1,6 @@
-import { homedir, EOL } from 'os';
+import { EOL } from 'os';
 import { USERNAME_ARG } from './const.js';
+import { getWorkDir } from './nwd.js'
 
 const getWelcomeMessage = () => {
   const userName = getUserName();
@@ -11,8 +12,7 @@ const getByeMessage = () => {
 }
 
 const getCurentWorkDirMessage= (workDir) => {
-  const dir = workDir == undefined ? homedir() : workDir;
-  return `You are currently in ${dir}` + EOL;
+  return `You are currently in ${getWorkDir()}` + EOL;
 }
 
 let userName = undefined;

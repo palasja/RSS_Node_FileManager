@@ -1,11 +1,12 @@
-import { EOL } from 'os';
 import * as readline from 'node:readline/promises';
 import { stdin as input, stdout as output } from 'node:process';
 import {
   getWelcomeMessage, 
   getByeMessage, 
   getCurentWorkDirMessage, 
-} from './helper.js'
+} from './helper.js';
+import { up } from './nwd.js'
+
 const start = async () => {
   const rl = await getReadLine();
   await rl.write(getWelcomeMessage());
@@ -13,6 +14,8 @@ const start = async () => {
     let answer = await rl.question(getCurentWorkDirMessage());
     if(answer == '.exit') {
       exit(rl);
+    } else if(answer == 'up'){
+      up();
     }
   }
 }
