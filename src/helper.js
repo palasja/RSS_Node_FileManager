@@ -1,6 +1,6 @@
 import { EOL } from 'node:os';
 import { USERNAME_ARG } from './const.js';
-import { getWorkDir } from './nwd.js'
+
 
 const getWelcomeMessage = () => {
   const userName = getUserName();
@@ -11,8 +11,8 @@ const getByeMessage = () => {
   return `Thank you for using File Manager, ${userName}, goodbye!` + EOL;
 }
 
-const getCurentWorkDirMessage= () => {
-  return `You are currently in ${getWorkDir()}` + EOL;
+const getCurentWorkDirMessage = (workDir) => {
+  return `You are currently in ${workDir}` + EOL;
 }
 
 let userName = undefined;

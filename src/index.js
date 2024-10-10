@@ -1,33 +1,40 @@
 import * as readline from 'node:readline/promises';
 import { EOL, homedir } from 'node:os';
 import { sep, resolve } from 'node:path';
+import { stat, opendir } from 'node:fs/promises';
+import { getWorkDir } from './nwd.js'
 import { stdin as input, stdout as output } from 'node:process';
 import {
   getWelcomeMessage, 
   getByeMessage, 
   getCurentWorkDirMessage, 
 } from './helper.js';
-import { up, cp } from './nwd.js'
+import { INPUT_ERROR_MESSAGE } from './const.js';
+import { up, cp, ls } from './nwd.js'
 
 const operation = {
   up: up,
-  cp: cp
+  cp: cp,
+  ls: ls
 }
 
 const start = async () => {
   const rl = await getReadLine();
   await rl.write(getWelcomeMessage());
   while(true){
-    const operationLine = await rl.question(getCurentWorkDirMessage());
+    const workDir = getWorkDir();
+    const workDirMessage = getCurentWorkDirMessage(workDir);
+    const operationLine = await rl.question(workDirMessage);
     if(operationLine == '.exit') {
       exit(rl);
     };
-    const operationArr = operationLine.split(' ');
-    const currentOperationName = operationArr[0];
-    const currentOperationArgsLine = operationArr.slice(1);
+    const delimiterCharIndex = operationLine.indexOf(' ');
+    const currentOperationName = delimiterCharIndex == -1 ? operationLine : operationLine.slice(0, delimiterCharIndex);
+    const currentOperationArgsLine = delimiterCharIndex == -1 ? '' : operationLine.slice(delimiterCharIndex + 1);
     try{
       const action = operation[currentOperationName];
-      action(currentOperationArgsLine);
+      if(action == undefined)  throw new Error(INPUT_ERROR_MESSAGE);
+      await action(currentOperationArgsLine);
     } catch(err) {
       rl.write(err.message + EOL);
     }
