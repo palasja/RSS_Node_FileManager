@@ -10,12 +10,13 @@ import {
   getCurentWorkDirMessage, 
 } from './helper.js';
 import { INPUT_ERROR_MESSAGE } from './const.js';
-import { up, cp, ls } from './nwd.js'
-
+import { up, cp, ls } from './nwd.js';
+import { os } from './os.js';
 const operation = {
   up: up,
   cp: cp,
-  ls: ls
+  ls: ls,
+  os: os
 }
 
 const start = async () => {
