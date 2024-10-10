@@ -11,9 +11,9 @@ const getWorkDir = () => {
   return workDir;
 }
 
-const up = async (args) => {
+const up = async (argString) => {
   //Validation - empty args
-  if(args.length > 0) throw new Error(INPUT_ERROR_MESSAGE);
+  if(argString.length > 0) throw new Error(INPUT_ERROR_MESSAGE);
 
   //Execution
   try{
@@ -27,16 +27,16 @@ const up = async (args) => {
 
 }
 
-const cp = async (args) => {
+const cp = async (argString) => {
   //Validation - args exist
-  if(args.length == 0) throw new Error(INPUT_ERROR_MESSAGE);
+  if(argString.length == 0) throw new Error(INPUT_ERROR_MESSAGE);
   
   const reg = new RegExp(`^${rootPath}`);
   let test = '';
 
   //Execution - check path exist and that folder
   try{
-    test = resolve(workDir, args);
+    test = resolve(workDir, argString);
     const pathStat = await stat(test);
     if(!pathStat.isDirectory()) throw new Error();
   } catch(err) {
@@ -45,13 +45,13 @@ const cp = async (args) => {
   
   //Check - same root directory
   if(reg.test(test)){
-    workDir = resolve(workDir, args);
+    workDir = resolve(workDir, argString);
   }
 }
 
-const ls = async (args) => {
+const ls = async (argString) => {
   //Validation - empty args
-  if(args.length > 0) throw new Error(INPUT_ERROR_MESSAGE);
+  if(argString.length > 0) throw new Error(INPUT_ERROR_MESSAGE);
   
   //Execution
   try{
