@@ -2,7 +2,7 @@ import * as readline from 'node:readline/promises';
 import { EOL, homedir } from 'node:os';
 import { sep, resolve } from 'node:path';
 import { stat, opendir } from 'node:fs/promises';
-import { getWorkDir } from './nwd.js'
+import { getWorkDir } from './nwd.js';
 import { stdin as input, stdout as output } from 'node:process';
 import {
   getWelcomeMessage, 
@@ -12,11 +12,13 @@ import {
 import { INPUT_ERROR_MESSAGE } from './const.js';
 import { up, cp, ls } from './nwd.js';
 import { os } from './os.js';
+import { hash } from './hash.js';
 const operation = {
   up: up,
   cp: cp,
   ls: ls,
-  os: os
+  os: os,
+  hash: hash,
 }
 
 const start = async () => {
