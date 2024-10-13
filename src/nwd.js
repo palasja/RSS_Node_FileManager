@@ -1,9 +1,7 @@
-import { homedir, EOL} from 'node:os';
+import { homedir} from 'node:os';
 import { sep, resolve } from 'node:path';
 import { INPUT_ERROR_MESSAGE, ACTION_ERROR_MESSAGE } from './const.js';
 import { stat, readdir } from 'node:fs/promises';
-import { stdin, stdout } from 'node:process';
-import { Readable } from 'node:stream';
 let workDir = homedir();
 const rootPath = process.env.homedrive;
 
@@ -27,7 +25,7 @@ const up = async (argString) => {
 
 }
 
-const cp = async (argString) => {
+const cd = async (argString) => {
   //Validation - args exist
   if(argString.length == 0) throw new Error(INPUT_ERROR_MESSAGE);
   
@@ -71,6 +69,6 @@ const fileDirectorySort = (val1, val2) => {
 export {
   getWorkDir,
   up,
-  cp,
+  cd,
   ls
 }
