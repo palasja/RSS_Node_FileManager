@@ -1,7 +1,5 @@
-import * as readline from 'node:readline/promises';
-import { EOL, homedir } from 'node:os';
-import { sep, resolve } from 'node:path';
-import { stat, opendir } from 'node:fs/promises';
+import { createInterface } from 'node:readline/promises';
+import { EOL } from 'node:os';
 import { getWorkDir } from './nwd.js';
 import { stdin as input, stdout as output } from 'node:process';
 import {
@@ -32,14 +30,14 @@ const operation = {
 }
 
 const start = async () => {
-  const rl = await getReadLine();
-  await rl.write(getWelcomeMessage());
+  const rl = getReadLine();
   while(true){
     const workDir = getWorkDir();
     const workDirMessage = getCurentWorkDirMessage(workDir);
     const operationLine = await rl.question(workDirMessage);
     if(operationLine == '.exit') {
       exit(rl);
+      process.exit();
     };
     const delimiterCharIndex = operationLine.indexOf(' ');
     const currentOperationName = delimiterCharIndex == -1 ? operationLine : operationLine.slice(0, delimiterCharIndex);
@@ -54,21 +52,20 @@ const start = async () => {
   }
 }
 
-const getReadLine = async () => {
-  const readLine = await readline.createInterface({ input, output });
+const getReadLine = () => {
+  const readLine = createInterface({ input, output });
 
   readLine.on('SIGINT', () => {
     exit(readLine);
+    process.exit();
   }); 
-  
+  readLine.write(getWelcomeMessage());
   return readLine;
 }
 
 const exit = async (rl) => {
-  rl.close();
   await rl.write(getByeMessage());
-  
-  process.exit();
+  rl.close();
 }
 
 

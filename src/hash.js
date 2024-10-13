@@ -1,6 +1,6 @@
 import { createHash } from 'node:crypto';
 import { CRYPTO_ENCODE } from './const.js';
-import { INPUT_ERROR_MESSAGE, ACTION_ERROR_MESSAGE } from './const.js';
+import { ACTION_ERROR_MESSAGE } from './const.js';
 import { resolve } from 'node:path';
 import { getWorkDir } from './nwd.js'
 import { open } from 'node:fs/promises';

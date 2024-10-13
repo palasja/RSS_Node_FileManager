@@ -1,7 +1,7 @@
 import { open } from 'node:fs/promises';
 import { pipeline } from 'node:stream/promises';
 import { ACTION_ERROR_MESSAGE } from './const.js';
-import { getWorkDir } from './nwd.js';
+import { getFullPath } from './nwd.js';
 import { resolve, basename, dirname } from 'node:path';
 import { writeFile, rename, rm as remove} from 'node:fs/promises';
 import { createWriteStream } from 'node:fs';
@@ -44,7 +44,6 @@ const rn = async (argString) => {
   const newFile = resolve(dirname(file), args[1]);
   try{
     await checkPathIsFile(file);
-
     await rename(file, newFile)
   } catch(err){
     throw new Error(ACTION_ERROR_MESSAGE);
@@ -88,10 +87,6 @@ const rm = async (argString) => {
   } catch(err){
     throw new Error(ACTION_ERROR_MESSAGE);
   }
-}
-
-const getFullPath = (file) => {
-  return resolve(getWorkDir(), file);
 }
 
 export {

@@ -1,9 +1,6 @@
-import { open } from 'node:fs/promises';
 import { pipeline } from 'node:stream/promises';
 import { COMPRESS_POSTFIX } from './const.js';
-import { getWorkDir } from './nwd.js';
-import { resolve, basename, dirname } from 'node:path';
-import { writeFile, rename, rm as remove} from 'node:fs/promises';
+import { resolve, basename } from 'node:path';
 import { createReadStream, createWriteStream } from 'node:fs';
 import { createBrotliCompress, createBrotliDecompress } from 'node:zlib';
 import {
@@ -31,8 +28,7 @@ const compress = async (argString) => {
     const brotli = createBrotliCompress();
     await pipeline(readable, brotli, writable);
   } catch(err){
-    console.error(err);
-    // throw new Error(ACTION_ERROR_MESSAGE);
+    throw new Error(ACTION_ERROR_MESSAGE);
   }
 }
 const decompress = async (argString) => {
@@ -52,8 +48,7 @@ const decompress = async (argString) => {
     const brotli = createBrotliDecompress();
     await pipeline(readable, brotli, writable);
   } catch(err){
-    console.error(err);
-    // throw new Error(ACTION_ERROR_MESSAGE);
+    throw new Error(ACTION_ERROR_MESSAGE);
   }
 }
 

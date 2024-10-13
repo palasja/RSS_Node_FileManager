@@ -15,9 +15,21 @@ const os = async (argString) => {
   console.log(info[infoArg]);
 }
 
+const cpusInfo = () =>{
+  const res = {
+    Overall_amount_of_CPUS: cpus().length
+  };
+  const coreInfo = cpus().map(cp => {return {
+    model: cp.model.trim(),
+    clock_rate: cp.speed
+  }})
+  res.coreInfo = coreInfo;
+  return res;
+}
+
 const info = {
   EOL: JSON.stringify(EOL),
-  cpus: cpus(),
+  cpus: cpusInfo(),
   homedir: homedir(),
   username: userInfo().username,
   architecture: arch()

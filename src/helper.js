@@ -1,6 +1,7 @@
 import { EOL } from 'node:os';
-import { USERNAME_ARG, INPUT_ERROR_MESSAGE, ACTION_ERROR_MESSAGE } from './const.js';
+import { USERNAME_ARG, INPUT_ERROR_MESSAGE } from './const.js';
 import { stat } from 'node:fs/promises';
+
 const getWelcomeMessage = () => {
   const userName = getUserName();
   return `Welcome to the File Manager, ${userName}!` + EOL;
@@ -26,18 +27,18 @@ const getUserName = () => {
 
 const checkArgsEmpty = (argString) => {
   //Validation - argString is empty
-  if(argString.length > 0) throw new Error(ACTION_ERROR_MESSAGE);
+  if(argString.length > 0) throw new Error(INPUT_ERROR_MESSAGE);
 }
 
 const checkArgsExist = (argString) => {
   //Validation - argString isn't empty
-  if(argString.length == 0) throw new Error(ACTION_ERROR_MESSAGE);
+  if(argString.length == 0) throw new Error(INPUT_ERROR_MESSAGE);
 }
 
 const checkArgsStringHasTwoArg = (argString) => {
     //Validation - argString has 2 parameters
     const args = argString.split(' ');
-    if(args.length != 2) throw new Error(ACTION_ERROR_MESSAGE);
+    if(args.length != 2) throw new Error(INPUT_ERROR_MESSAGE);
 }
 
 const checkPathIsFile =  async (path) => {

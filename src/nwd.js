@@ -1,7 +1,7 @@
 import { homedir} from 'node:os';
 import { sep, resolve } from 'node:path';
-import { INPUT_ERROR_MESSAGE, ACTION_ERROR_MESSAGE } from './const.js';
-import { stat, readdir } from 'node:fs/promises';
+import { ACTION_ERROR_MESSAGE } from './const.js';
+import { readdir } from 'node:fs/promises';
 import { checkArgsExist, checkArgsEmpty, checkPathIsFolder} from './helper.js';
 
 let workDir = homedir();
@@ -15,7 +15,7 @@ const up = async (argString) => {
   checkArgsEmpty(argString);
 
   try{
-    let pathArr = workDir.split(sep);
+    const pathArr = workDir.split(sep);
     if(pathArr.length != 1) {
       workDir = pathArr.slice(0,-1).join(sep);
     }
@@ -24,6 +24,7 @@ const up = async (argString) => {
   }
 
 }
+
 
 const cd = async (argString) => {
   checkArgsExist(argString);
@@ -35,8 +36,6 @@ const cd = async (argString) => {
 
     if(reg.test(fullPath)){
       workDir = resolve(workDir, argString);
-    } else {
-      throw new Error();
     }
   } catch(err) {
     throw new Error(ACTION_ERROR_MESSAGE);
@@ -61,9 +60,14 @@ const fileDirectorySort = (val1, val2) => {
   return (val1.isDirectory() == val2.isDirectory())? 0 : val1.isDirectory()? -1 : 1;
 }
 
+const getFullPath = (file) => {
+  return resolve(getWorkDir(), file);
+}
+
 export {
   getWorkDir,
   up,
   cd,
-  ls
+  ls,
+  getFullPath
 }
