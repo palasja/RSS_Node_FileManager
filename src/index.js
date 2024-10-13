@@ -14,6 +14,7 @@ import { up, cd, ls } from './nwd.js';
 import { os } from './os.js';
 import { hash } from './hash.js';
 import { cat, add, rn, cp, rm, mv } from './fs.js';
+import { compress, decompress} from './compress.js'
 const operation = {
   up: up,
   cd: cd,
@@ -25,7 +26,9 @@ const operation = {
   cp: cp,
   rn: rn,
   rm: rm,
-  mv: mv
+  mv: mv,
+  compress: compress,
+  decompress: decompress
 }
 
 const start = async () => {
