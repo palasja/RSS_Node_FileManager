@@ -1,10 +1,9 @@
 import { EOL, cpus, homedir, arch, userInfo } from 'node:os';
 import { INPUT_ERROR_MESSAGE } from './const.js';
 import { OS_ARG_PREFIX } from './const.js';
-
+import { checkArgsExist} from './helper.js';
 const os = async (argString) => {
-  //Validation - args exist
-  if(argString.length == 0) throw new Error(INPUT_ERROR_MESSAGE);
+  checkArgsExist(argString);
   //Validation - args start by --
   const regPrefix = new RegExp(`^${OS_ARG_PREFIX}`);
   if(!regPrefix.test(argString)) throw new Error(INPUT_ERROR_MESSAGE);

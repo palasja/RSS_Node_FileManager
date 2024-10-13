@@ -24,6 +24,11 @@ const getUserName = () => {
   return userName;
 }
 
+const checkArgsEmpty = (argString) => {
+  //Validation - argString is empty
+  if(argString.length > 0) throw new Error(ACTION_ERROR_MESSAGE);
+}
+
 const checkArgsExist = (argString) => {
   //Validation - argString isn't empty
   if(argString.length == 0) throw new Error(ACTION_ERROR_MESSAGE);
@@ -55,4 +60,5 @@ export {
   checkArgsStringHasTwoArg,
   checkPathIsFile,
   checkPathIsFolder,
+  checkArgsEmpty,
 }

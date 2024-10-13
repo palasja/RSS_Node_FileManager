@@ -7,9 +7,10 @@ import { open } from 'node:fs/promises';
 import { pipeline } from 'node:stream/promises';
 import { Transform } from 'node:stream';
 import {  EOL} from 'node:os';
+import { checkArgsExist} from './helper.js';
+
 const hash = async (argString) => {
-  //Validation - args exist
-  if(argString.length == 0) throw new Error(INPUT_ERROR_MESSAGE);
+  checkArgsExist(argString);
 
   const OUTPUT_ENCODE = 'hex';
   const filePath = resolve(getWorkDir(), argString);

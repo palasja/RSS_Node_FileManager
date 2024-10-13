@@ -2,6 +2,8 @@ import { homedir} from 'node:os';
 import { sep, resolve } from 'node:path';
 import { INPUT_ERROR_MESSAGE, ACTION_ERROR_MESSAGE } from './const.js';
 import { stat, readdir } from 'node:fs/promises';
+import { checkArgsExist, checkArgsEmpty, checkPathIsFolder} from './helper.js';
+
 let workDir = homedir();
 const rootPath = process.env.homedrive;
 
@@ -10,10 +12,8 @@ const getWorkDir = () => {
 }
 
 const up = async (argString) => {
-  //Validation - empty args
-  if(argString.length > 0) throw new Error(INPUT_ERROR_MESSAGE);
+  checkArgsEmpty(argString);
 
-  //Execution
   try{
     let pathArr = workDir.split(sep);
     if(pathArr.length != 1) {
@@ -26,37 +26,32 @@ const up = async (argString) => {
 }
 
 const cd = async (argString) => {
-  //Validation - args exist
-  if(argString.length == 0) throw new Error(INPUT_ERROR_MESSAGE);
+  checkArgsExist(argString);
   
   const reg = new RegExp(`^${rootPath}`);
-  let test = '';
-
-  //Execution - check path exist and that folder
   try{
-    test = resolve(workDir, argString);
-    const pathStat = await stat(test);
-    if(!pathStat.isDirectory()) throw new Error();
+    const fullPath = resolve(workDir, argString);
+    await checkPathIsFolder(fullPath);
+
+    if(reg.test(fullPath)){
+      workDir = resolve(workDir, argString);
+    } else {
+      throw new Error();
+    }
   } catch(err) {
     throw new Error(ACTION_ERROR_MESSAGE);
-  }
-  
-  //Check - same root directory
-  if(reg.test(test)){
-    workDir = resolve(workDir, argString);
   }
 }
 
 const ls = async (argString) => {
-  //Validation - empty args
-  if(argString.length > 0) throw new Error(INPUT_ERROR_MESSAGE);
-  
-  //Execution
+  checkArgsEmpty(argString);
+  const DIR_LINE = '|  directory  |  ';
+  const FILE_LINE = '|     file    |  ';
   try{
     let dir = await readdir(workDir, {withFileTypes: true});
     dir.sort(fileDirectorySort);
     for await (const folder of dir)
-        console.log(folder.isDirectory() ? '|  directory  |  ' : '|     file    |  ', folder.name);
+        console.log(folder.isDirectory() ? DIR_LINE : FILE_LINE, folder.name);
   } catch(err){
     throw new Error(ACTION_ERROR_MESSAGE);
   }
